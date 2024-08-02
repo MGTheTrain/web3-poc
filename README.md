@@ -21,7 +21,14 @@ Proof of Concept (PoC) demonstrating the integration of Web3 technologies into a
 ## Preconditions
 
 - Ensure you have Node.js and npm installed
-- Install npm dependencies by running `npm install`
+- Install npm dependencies by running:
+
+```sh
+cd hardhat
+npm install
+cd dapp
+npm install
+```
 
 ## Getting Started
 
