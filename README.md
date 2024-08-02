@@ -38,6 +38,6 @@ cd -
 
 Checkout the [hardhat README.md](./hardhat/README.md)
 
-### Running React SPA
+### Running React DApp
 
-TBD
+Checkout the [web3-sample-dapp README.md](./web3-sample-dapp/README.md)
