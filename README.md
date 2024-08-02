@@ -50,3 +50,7 @@ Finally in the second terminal start the React dapp by running::
 ```sh
 make start-react-app
 ```
+
+Results should resemble the following:
+
+![Result](./images/result.PNG)
