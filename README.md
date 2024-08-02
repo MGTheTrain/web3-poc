@@ -18,6 +18,7 @@ Proof of Concept (PoC) demonstrating the integration of Web3 technologies into a
 
 ## Preconditions
 
+- Unix-like terminal (Ubuntu WSL on Windows OS)
 - Ensure you have Node.js and npm installed
 - Install npm dependencies by running:
 
@@ -32,10 +33,20 @@ cd -
 
 ## Getting Started
 
-### Smart Contracts development with Hardhat
+Open one terminal and start the local Ethereum node by executing:
 
-Checkout the [hardhat README.md](./hardhat/README.md)
+```sh
+make launch-local-eth-node
+```
 
-### Running React DApp
+In a second terminal compile and deploy the Greeter smart contract [Greeter smart contract](./hardhat/contracts/Greeter.sol) with:
 
-Checkout the [web3-sample-dapp README.md](./web3-sample-dapp/README.md)
+```sh
+make compile-and-deploy-greeter-smart-contract
+```
+
+Finally in the second terminal start the React dapp by running:: 
+
+```sh
+make start-react-app
+```
