@@ -26,8 +26,10 @@ Proof of Concept (PoC) demonstrating the integration of Web3 technologies into a
 ```sh
 cd hardhat
 npm install
+cd -
 cd dapp
 npm install
+cd -
 ```
 
 ## Getting Started
