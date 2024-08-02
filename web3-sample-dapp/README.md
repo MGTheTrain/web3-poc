@@ -14,6 +14,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
+
+**NOTE:** If you encounter an error with the code `ERR_OSSL_EVP_UNSUPPORTED` make sure to set the following environment variable:
+
+In Windows PowerShell use: `$env:NODE_OPTIONS="--openssl-legacy-provider"`
+In a Unix shell use: `export NODE_OPTIONS=--openssl-legacy-provider`
+
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.\
