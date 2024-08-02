@@ -1,5 +1,7 @@
 # web3-poc
 
+![Status](https://img.shields.io/badge/status-on%20hold-yellow)
+
 ## Table of Content
 
 - [Summary](#summary)
