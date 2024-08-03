@@ -15,6 +15,7 @@ Proof of Concept (PoC) demonstrating the integration of Web3 technologies into a
 
 - [Hardhat Ethereum development environment](https://github.com/NomicFoundation/hardhat)
 - [Deploying your contracts](https://hardhat.org/hardhat-runner/docs/guides/deploying)
+- [OpenZeppelin](https://wizard.openzeppelin.com/#erc20)
 
 ## Preconditions
 
@@ -30,6 +31,23 @@ cd web3-sample-dapp
 npm install
 cd -
 ```
+
+- Add [MetaMask extension](https://chromewebstore.google.com/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn) for signed transactions. Therefore
+    1. Setup custom RPC network similar to: 
+
+    ![Custom RPC network](./images/setup-custom-RPC-network.PNG)
+
+    2. Import private keys similar to:
+    <table>
+    <tr>
+        <td><img src="./images/import-private-key-I.PNG" alt="Import private key I" width="300"/></td>
+        <td><img src="./images/import-private-key-II.PNG" alt="Import private key II" width="300"/></td>
+    </tr>
+    </table>
+
+    3. Transfer ETH to Account 1 similar to:
+
+    ![Transfer ETH](./images/transfer-eth.PNG)
 
 ## Getting Started
 
