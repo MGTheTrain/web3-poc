@@ -34,8 +34,9 @@ const GREETER_ABI = [
 ];
 
 const GREETER_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3'; 
-
 const DESIRED_ACCOUNT = '0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199'; 
+
+const HARDHAT_NETWORK_ID = 31337;
 
 const Greeter: React.FC = () => {
   const [greeting, setGreeting] = useState<string>('');
@@ -54,20 +55,23 @@ const Greeter: React.FC = () => {
     if (window.ethereum) {
       const provider = window.ethereum;
       try {
+        // Request account access and network switch
         await provider.request({ 
-          method: 'eth_requestAccounts',
-          params: [{ chainId: `0x${(31337).toString(16)}` }], 
+          method: 'eth_requestAccounts'
         });
+        // await provider.request({ 
+        //   method: 'wallet_switchEthereumChain',
+        //   params: [{ chainId: `0x${HARDHAT_NETWORK_ID.toString(16)}` }], 
+        // });
+
         const web3Instance = new Web3(provider);
         setWeb3(web3Instance);
 
         const accounts = await web3Instance.eth.getAccounts();
         setAccounts(accounts);
-        
-        const networkIdBigInt = await web3Instance.eth.net.getId();
-        const networkIdNumber = Number(networkIdBigInt); 
-        
-        if (networkIdNumber !== 31337) { 
+
+        const networkId = await web3Instance.eth.net.getId();
+        if (networkId !== BigInt(HARDHAT_NETWORK_ID)) { 
           setError('Please switch to the Hardhat Network.');
           return;
         }
@@ -75,13 +79,12 @@ const Greeter: React.FC = () => {
         const greeterContract = new web3Instance.eth.Contract(GREETER_ABI, GREETER_ADDRESS);
         setContract(greeterContract);
 
-        
         if (greeterContract) {
           loadGreeting(greeterContract);
         }
       } catch (error) {
         console.error('Error initializing Web3:', error);
-        setError('Error initializing Web3');
+        setError(`Error initializing Web3: ${error}`);
       }
     } else {
       setError('MetaMask is not installed or not connected.');
@@ -96,7 +99,7 @@ const Greeter: React.FC = () => {
       setGreeting(currentGreeting);
     } catch (error) {
       console.error('Error fetching greeting:', error);
-      setError('Error fetching greeting');
+      setError(`Error fetching greeting: ${error}`);
     }
   };
 
@@ -111,19 +114,26 @@ const Greeter: React.FC = () => {
     }
     setLoading(true);
     try {   
-      console.log(accounts);  
-      const selectedAccount = accounts.includes(DESIRED_ACCOUNT) ? DESIRED_ACCOUNT : accounts[0]; // you might need to transfer eth from imported account to initial account created in manual network
-      await contract.methods.setGreeting(newGreeting).send({ from: selectedAccount });
+      console.log('Accounts:', accounts);  
+      const selectedAccount = accounts.includes(DESIRED_ACCOUNT) ? DESIRED_ACCOUNT : accounts[0];
+      console.log('Using account:', selectedAccount);
+  
+      // Fetch the latest nonce
+      const nonce = await web3?.eth.getTransactionCount(selectedAccount, 'latest');
+      
+      // Send transaction with the fetched nonce
+      await contract.methods.setGreeting(newGreeting).send({ from: selectedAccount, nonce });
       const updatedGreeting = await contract.methods.greet().call();
       setGreeting(updatedGreeting);
       setNewGreeting('');
     } catch (error) {
       console.error('Error updating greeting:', error);
-      setError('Error updating greeting');
+      setError(`Error updating greeting: ${error}`);
     } finally {
       setLoading(false);
     }
   };
+  
 
   if (!web3) {
     return <div>Loading MetaMask...</div>;
