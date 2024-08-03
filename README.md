@@ -75,3 +75,7 @@ Results should resemble the following:
 
 ![Confirmation](./images/confirmation.PNG)
 ![Result](./images/result.PNG)
+
+**NOTE**: Consider clearing activity data if you experience errors as described [in this link](https://github.com/NomicFoundation/hardhat/issues/3310):
+
+![Clearing activity data](./images/clear-activity-data.PNG)
