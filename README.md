@@ -9,7 +9,7 @@
 
 ## Summary
 
-Proof of Concept (PoC) demonstrating the integration of Web3 technologies into a decentralized application (dApp)
+Proof of Concept (PoC) in regards to Web3 with smart contracts and a decentralized application (dApp)
 
 ## References
 
