@@ -40,8 +40,8 @@ cd -
     ![Custom RPC network](./images/setup-custom-RPC-network.PNG)
 
     **NOTE:** The hardhat network id is per default `31337`.
-    
-    2. Import private keys similar to:
+
+    2. Import private keys in hardhat local node console logs in MetaMask:
     <table>
     <tr>
         <td><img src="./images/import-private-key-I.PNG" alt="Import private key I" width="300"/></td>
