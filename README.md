@@ -73,5 +73,5 @@ make start-react-app
 
 Results should resemble the following:
 
-![Confirmation](./images/result-I.PNG)
+![Confirmation](./images/confirmation.PNG)
 ![Result](./images/result.PNG)
