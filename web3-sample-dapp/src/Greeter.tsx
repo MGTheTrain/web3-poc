@@ -33,47 +33,90 @@ const GREETER_ABI = [
   }
 ];
 
-const GREETER_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+const GREETER_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3'; 
+
+const DESIRED_ACCOUNT = '0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199'; 
 
 const Greeter: React.FC = () => {
   const [greeting, setGreeting] = useState<string>('');
   const [newGreeting, setNewGreeting] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [web3, setWeb3] = useState<Web3 | null>(null);
+  const [accounts, setAccounts] = useState<string[]>([]);
+  const [contract, setContract] = useState<any>(null);
 
   useEffect(() => {
-    const loadGreeting = async () => {
-      const web3 = new Web3('http://127.0.0.1:8545');
-      const greeterContract = new web3.eth.Contract(GREETER_ABI, GREETER_ADDRESS);
-
-      try {
-        const currentGreeting = await greeterContract.methods.greet().call() as string;
-        setGreeting(currentGreeting);
-      } catch (error) {
-        console.error('Error fetching greeting:', error);
-        setError('Error fetching greeting');
-      }
-    };
-
-    loadGreeting();
+    initializeWeb3();
   }, []);
+
+  const initializeWeb3 = async () => {
+    if (window.ethereum) {
+      const provider = window.ethereum;
+      try {
+        await provider.request({ 
+          method: 'eth_requestAccounts',
+          params: [{ chainId: `0x${(31337).toString(16)}` }], 
+        });
+        const web3Instance = new Web3(provider);
+        setWeb3(web3Instance);
+
+        const accounts = await web3Instance.eth.getAccounts();
+        setAccounts(accounts);
+        
+        const networkIdBigInt = await web3Instance.eth.net.getId();
+        const networkIdNumber = Number(networkIdBigInt); 
+        
+        if (networkIdNumber !== 31337) { 
+          setError('Please switch to the Hardhat Network.');
+          return;
+        }
+        
+        const greeterContract = new web3Instance.eth.Contract(GREETER_ABI, GREETER_ADDRESS);
+        setContract(greeterContract);
+
+        
+        if (greeterContract) {
+          loadGreeting(greeterContract);
+        }
+      } catch (error) {
+        console.error('Error initializing Web3:', error);
+        setError('Error initializing Web3');
+      }
+    } else {
+      setError('MetaMask is not installed or not connected.');
+    }
+  };
+
+  const loadGreeting = async (contract: any) => {
+    try {
+      console.log('Attempting to load greeting...');
+      const currentGreeting = await contract.methods.greet().call();
+      console.log('Greeting loaded:', currentGreeting);
+      setGreeting(currentGreeting);
+    } catch (error) {
+      console.error('Error fetching greeting:', error);
+      setError('Error fetching greeting');
+    }
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewGreeting(event.target.value);
   };
 
   const updateGreeting = async () => {
+    if (!contract || accounts.length === 0) {
+      setError('Contract or accounts not loaded');
+      return;
+    }
     setLoading(true);
-    const web3 = new Web3('http://127.0.0.1:8545');
-    const accounts = await web3.eth.getAccounts();
-    const greeterContract = new web3.eth.Contract(GREETER_ABI, GREETER_ADDRESS);
-
-    try {
-      await greeterContract.methods.setGreeting(newGreeting).send({ from: accounts[0] });
-
-      const updatedGreeting = await greeterContract.methods.greet().call() as string;
+    try {   
+      console.log(accounts);  
+      const selectedAccount = accounts.includes(DESIRED_ACCOUNT) ? DESIRED_ACCOUNT : accounts[0]; // you might need to transfer eth from imported account to initial account created in manual network
+      await contract.methods.setGreeting(newGreeting).send({ from: selectedAccount });
+      const updatedGreeting = await contract.methods.greet().call();
       setGreeting(updatedGreeting);
-      setNewGreeting(''); 
+      setNewGreeting('');
     } catch (error) {
       console.error('Error updating greeting:', error);
       setError('Error updating greeting');
@@ -81,6 +124,10 @@ const Greeter: React.FC = () => {
       setLoading(false);
     }
   };
+
+  if (!web3) {
+    return <div>Loading MetaMask...</div>;
+  }
 
   return (
     <Container className="my-5">
