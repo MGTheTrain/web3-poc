@@ -39,6 +39,8 @@ cd -
 
     ![Custom RPC network](./images/setup-custom-RPC-network.PNG)
 
+    **NOTE:** The hardhat network id is per default `31337`.
+    
     2. Import private keys similar to:
     <table>
     <tr>
