@@ -59,13 +59,13 @@ Open one terminal and start the local Ethereum node by executing:
 make launch-local-eth-node
 ```
 
-In a second terminal compile and deploy the Greeter smart contract [Greeter smart contract](./hardhat/contracts/Greeter.sol) with:
+In a second terminal compile and deploy the [Greeter smart contract](./hardhat/contracts/Greeter.sol) with:
 
 ```sh
 make compile-and-deploy-greeter-smart-contract
 ```
 
-Finally in the second terminal start the React dapp by running:: 
+Finally in the second terminal start the React dapp by running:
 
 ```sh
 make start-react-app
