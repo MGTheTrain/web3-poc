@@ -11,6 +11,8 @@
 
 Proof of Concept (PoC) demonstrating the integration of Web3 technologies into a decentralized application (dApp)
 
+**NOTE** In this proof of concept (PoC) we are only working with a local Hardhat node and not interacting with test or production networks.
+
 ## References
 
 - [Hardhat Ethereum development environment](https://github.com/NomicFoundation/hardhat)
